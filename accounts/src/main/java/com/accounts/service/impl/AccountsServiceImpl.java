@@ -10,7 +10,6 @@ import com.accounts.service.IAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Random;
 
 import static com.accounts.constants.AccountConstants.ADDRESS;
@@ -44,6 +43,7 @@ public class AccountsServiceImpl implements IAccountService {
      */
     private Account createNewAccount(Customer customer) {
         Account newAccount = new Account();
+        //todo add one to one
         //newAccount.setId(customer.getId());
         long randomAccNumber = 1000000000L + new Random().nextInt(900000000);
 
