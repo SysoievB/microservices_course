@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table(name = "customers")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
@@ -19,4 +20,10 @@ public class Customer extends BaseEntity {
     String name;
     String email;
     String phoneNumber;
+
+    public Customer(String name, String email, String phoneNumber) {
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 }

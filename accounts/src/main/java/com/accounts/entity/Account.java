@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table(name = "accounts")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
@@ -19,4 +20,10 @@ public class Account {
     Long accountNumber;
     String accountType;
     String branchAddress;
+
+    public Account(Long accountNumber, String accountType, String branchAddress) {
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+        this.branchAddress = branchAddress;
+    }
 }
