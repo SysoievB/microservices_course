@@ -1,13 +1,13 @@
 create table accounts
 (
     id             bigint not null auto_increment,
-    created_at   date,
-    updated_at   date,
-    created_by   varchar(255),
-    updated_by   varchar(255),
+    created_at     date,
+    updated_at     date,
     account_number bigint,
     account_type   varchar(255),
     branch_address varchar(255),
+    created_by     varchar(255),
+    updated_by     varchar(255),
     primary key (id)
 );
 create table customers
