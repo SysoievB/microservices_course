@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static com.accounts.constants.AccountConstants.*;
@@ -16,11 +17,12 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/accounts")
 @RequiredArgsConstructor
+@Validated
 public class AccountController {
     private final IAccountService service;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createAccountDetails(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ResponseDto> createAccountDetails(@Valid @RequestBody CustomerDto customerDto) {
         service.createAccount(customerDto);
         return ResponseEntity.status(CREATED)
                 .body(new ResponseDto(STATUS_201.getDescription(), MESSAGE_201.getDescription()));
