@@ -16,6 +16,7 @@ import java.util.Random;
 
 import static com.accounts.constants.AccountConstants.ADDRESS;
 import static com.accounts.constants.AccountConstants.SAVINGS;
+import static com.accounts.mapper.AccountMapper.mapToAccounts;
 import static com.accounts.mapper.AccountMapper.mapToAccountsDto;
 import static com.accounts.mapper.CustomerMapper.mapToCustomer;
 import static com.accounts.mapper.CustomerMapper.mapToCustomerDto;
@@ -35,7 +36,7 @@ public class AccountsServiceImpl implements IAccountService {
         customerJpaRepository.findByPhoneNumber(customerDto.getPhoneNumber())
                 .ifPresent(c -> {
                     throw new CustomerAlreadyExistsException("Customer already registered with given mobileNumber "
-                                    + customerDto.getPhoneNumber());
+                            + customerDto.getPhoneNumber());
                 });
         Customer savedCustomer = customerJpaRepository.save(customer);
         accountJpaRepository.save(createNewAccount(savedCustomer));
@@ -50,7 +51,7 @@ public class AccountsServiceImpl implements IAccountService {
         Customer customer = customerJpaRepository.findByPhoneNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
-        Account account = accountJpaRepository.findById(customer.getId()).orElseThrow(
+        Account account = accountJpaRepository.findByCustomerId(customer.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Account", "id", customer.getId().toString())
         );
         CustomerDto customerDto = mapToCustomerDto(customer, new CustomerDto());
@@ -72,5 +73,45 @@ public class AccountsServiceImpl implements IAccountService {
         newAccount.setAccountType(SAVINGS.getDescription());
         newAccount.setBranchAddress(ADDRESS.getDescription());
         return newAccount;
+    }
+
+    /**
+     * @param customerDto - CustomerDto Object
+     * @return boolean indicating if the update of Account details is successful or not
+     */
+    @Override
+    public boolean updateAccount(CustomerDto customerDto) {
+        boolean isUpdated = false;
+        AccountDto accountDto = customerDto.getAccountDto();
+        if (accountDto != null) {
+            Account account = accountJpaRepository.findById(accountDto.getAccountNumber()).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "AccountNumber", accountDto.getAccountNumber().toString())
+            );
+            mapToAccounts(accountDto, account);
+            account = accountJpaRepository.save(account);
+
+            Long customerId = account.getId();
+            Customer customer = customerJpaRepository.findById(customerId).orElseThrow(
+                    () -> new ResourceNotFoundException("Customer", "CustomerID", customerId.toString())
+            );
+            mapToCustomer(customerDto, customer);
+            customerJpaRepository.save(customer);
+            isUpdated = true;
+        }
+        return isUpdated;
+    }
+
+    /**
+     * @param mobileNumber - Input Mobile Number
+     * @return boolean indicating if the delete of Account details is successful or not
+     */
+    @Override
+    public boolean deleteAccount(String mobileNumber) {
+        Customer customer = customerJpaRepository.findByPhoneNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+        accountJpaRepository.deleteByCustomerId(customer.getId());
+        customerJpaRepository.deleteById(customer.getId());
+        return true;
     }
 }
