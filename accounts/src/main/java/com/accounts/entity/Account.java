@@ -21,6 +21,10 @@ public class Account extends BaseEntity {
     String accountType;
     String branchAddress;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    Customer customer;
+
     public Account(Long accountNumber, String accountType, String branchAddress) {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
