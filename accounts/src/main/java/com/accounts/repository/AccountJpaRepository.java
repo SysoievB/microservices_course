@@ -18,7 +18,7 @@ public interface AccountJpaRepository extends JpaRepository<Account, Long> {
     @Transactional
     @Modifying
     @Query("""
-            DELETE FROM Account a WHERE a.customer.id = :accountId
+            DELETE FROM Account a WHERE a.customer.id = :customerId
             """)
     void deleteByCustomerId(Long customerId);
 }
