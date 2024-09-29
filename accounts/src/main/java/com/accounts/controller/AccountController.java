@@ -4,7 +4,6 @@ import com.accounts.dto.CustomerDto;
 import com.accounts.dto.ErrorResponseDto;
 import com.accounts.dto.ResponseDto;
 import com.accounts.service.IAccountService;
-import com.accounts.service.impl.AccountsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,8 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,6 +27,9 @@ import static org.springframework.http.HttpStatus.CREATED;
 @Validated
 public class AccountController {
     private final IAccountService service;
+
+    @Value("${build.version}")
+    private String buildVersion;
 
     @Operation(
             summary = "Create Account REST API",
@@ -148,5 +150,10 @@ public class AccountController {
                 : ResponseEntity
                 .status(HttpStatus.EXPECTATION_FAILED)
                 .body(new ResponseDto(STATUS_417.getDescription(), MESSAGE_417_DELETE.getDescription()));
+    }
+
+    @GetMapping("version")
+    public ResponseEntity<String> getBuildInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 }
