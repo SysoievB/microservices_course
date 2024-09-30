@@ -12,7 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +32,9 @@ public class AccountController {
 
     @Value("${build.version}")
     private String buildVersion;
+
+    @Autowired
+    private Environment environment;
 
     @Operation(
             summary = "Create Account REST API",
@@ -152,8 +157,13 @@ public class AccountController {
                 .body(new ResponseDto(STATUS_417.getDescription(), MESSAGE_417_DELETE.getDescription()));
     }
 
-    @GetMapping("version")
+    @GetMapping("/version")
     public ResponseEntity<String> getBuildInfo() {
         return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+    }
+
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
     }
 }
