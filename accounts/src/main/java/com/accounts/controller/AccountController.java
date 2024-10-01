@@ -1,5 +1,6 @@
 package com.accounts.controller;
 
+import com.accounts.dto.AccountsContactInfoDto;
 import com.accounts.dto.CustomerDto;
 import com.accounts.dto.ErrorResponseDto;
 import com.accounts.dto.ResponseDto;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -35,6 +37,9 @@ public class AccountController {
 
     @Autowired
     private Environment environment;
+    @Autowired
+    private AccountsContactInfoDto accountsContactInfoDto;
+
 
     @Operation(
             summary = "Create Account REST API",
@@ -164,6 +169,18 @@ public class AccountController {
 
     @GetMapping("/java-version")
     public ResponseEntity<String> getJavaVersion() {
-        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+        //C:\Program Files\Java\openjdk-21.0.2
+        val regEx = "[a-zA-Z-:\\\\]";
+        val property = environment.getProperty("JAVA_HOME");
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(property.replaceAll(regEx, ""));//21.0.2
+    }
+
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDto> getContactInfo() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountsContactInfoDto);
     }
 }
