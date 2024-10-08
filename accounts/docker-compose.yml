@@ -1,6 +1,6 @@
 services:
   accounts:
-    image: "sysoiev/accounts:section4"
+    image: "sysoiev/accounts:section6"
     container_name: accounts-ms
     ports:
       - "8080:8080"
@@ -11,7 +11,7 @@ services:
     networks:
       - microservice_course
   loans:
-    image: "sysoiev/loans:section4"
+    image: "sysoiev/loans:section6"
     container_name: loans-ms
     ports:
       - "8090:8090"
@@ -22,7 +22,7 @@ services:
     networks:
       - microservice_course
   cards:
-    image: "sysoiev/cards:section4"
+    image: "sysoiev/cards:section6"
     container_name: cards-ms
     ports:
       - "9000:9000"
