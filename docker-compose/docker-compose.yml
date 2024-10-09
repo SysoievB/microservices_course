@@ -1,4 +1,18 @@
 services:
+  # MySQL Service
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: microservice_accounts
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
   rabbit:
     image: rabbitmq:3.13-management
     hostname: rabbitmq
