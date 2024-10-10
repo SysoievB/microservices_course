@@ -169,7 +169,6 @@ public class AccountController {
 
     @GetMapping("/java-version")
     public ResponseEntity<String> getJavaVersion() {
-        //C:\Program Files\Java\openjdk-21.0.2
         val regEx = "[a-zA-Z-:\\\\]";
         val property = environment.getProperty("JAVA_HOME");
 
