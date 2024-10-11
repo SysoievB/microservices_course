@@ -30,13 +30,10 @@ services:
       service: microservice-db-config
 
   configserver:
-    image: "sysoiev/configserver:section6"
+    image: "sysoiev/configserver:section7"
     container_name: configserver-ms
     ports:
       - "8071:8071"
-    depends_on:
-      rabbit:
-        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
