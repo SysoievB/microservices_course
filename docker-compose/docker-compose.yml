@@ -30,7 +30,7 @@ services:
       service: microservice-db-config
 
   configserver:
-    image: "sysoiev/configserver:section8"
+    image: "sysoiev/configservers:section8"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -65,7 +65,7 @@ services:
       SPRING_APPLICATION_NAME: "eurekaserver"
 
   accounts:
-    image: "sysoiev/accounts:section8"
+    image: "sysoiev/account:section8"
     container_name: accounts-ms
     ports:
       - "8080:8080"
