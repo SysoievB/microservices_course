@@ -2,6 +2,7 @@ package com.cards.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Getter
@@ -9,21 +10,22 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Cards extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long cardId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long cardId;
 
-	private String mobileNumber;
+    String mobileNumber;
 
-	private String cardNumber;
+    String cardNumber;
 
-	private String cardType;
+    String cardType;
 
-	private int totalLimit;
+    int totalLimit;
 
-	private int amountUsed;
+    int amountUsed;
 
-	private int availableAmount;
+    int availableAmount;
 }
